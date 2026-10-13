@@ -344,6 +344,28 @@
 
     grid.innerHTML = '';
 
+    function formatCardTitleHtml(title) {
+      if (title.includes('100/10')) {
+        return `
+          <span class="fragment-title-lead">That</span>
+          <div class="fragment-title-featured">
+            <span class="highlight-score-pill"><span class="score-sparkle">★</span> 100/10</span>
+            <span class="highlight-main-word highlight-smile">Smile<span class="hero-dot">.</span></span>
+          </div>
+        `;
+      }
+      if (title.toLowerCase().includes('bad') && title.toLowerCase().includes('habit')) {
+        return `
+          <span class="fragment-title-lead">Her</span>
+          <div class="fragment-title-featured">
+            <span class="highlight-quirk-pill">‘Bad’</span>
+            <span class="highlight-main-word highlight-habits">Habits<span class="hero-dot">.</span></span>
+          </div>
+        `;
+      }
+      return `<div class="fragment-title-featured"><span class="highlight-main-word">${title}</span></div>`;
+    }
+
     CONFIG.littleThings.forEach((item, i) => {
       const card = el('div', {
         className: 'flip-card reveal-up',
@@ -359,14 +381,37 @@
       // ── FRONT ──
       const front = el('div', { className: 'flip-card-front' });
       front.appendChild(el('div', { className: 'washi-tape' }));
-      front.appendChild(el('div', { className: 'fragment-tag' }, item.tag || 'Memory'));
-      front.appendChild(el('div', { className: 'fragment-num' }, item.num || `0${i+1}`));
-      front.appendChild(el('h3', { className: 'fragment-title' }, item.title));
+
+      // Top Bar: Tag pill on left, editorial number on right
+      const topBar = el('div', { className: 'card-front-topbar' },
+        el('div', { className: 'fragment-tag' },
+          el('span', { className: 'tag-star' }, '✦'),
+          el('span', {}, item.tag || 'Memory')
+        ),
+        el('div', { className: 'fragment-num' }, `№ ${item.num || `0${i+1}`}`)
+      );
+      front.appendChild(topBar);
+
+      // Standout highlighted title
+      const titleElem = el('h3', { className: 'fragment-title' });
+      titleElem.innerHTML = formatCardTitleHtml(item.title);
+      front.appendChild(titleElem);
+
+      // Body text
       front.appendChild(el('p', { className: 'fragment-body' }, item.frontDesc));
+
+      // Handwritten scrap note in Caveat font
+      const handNoteText = item.frontNote || (i === 0 ? 'literally lights up the whole room ✨' : 'pure drama, 0% regrets 💅');
+      const handNote = el('div', { className: 'card-handnote' },
+        el('span', {}, `“${handNoteText}”`)
+      );
+      front.appendChild(handNote);
       
+      // Interactive aesthetic flip CTA button
       const flipCue = el('div', { className: 'flip-cue' },
         el('span', { className: 'flip-cue-icon' }, '↻'),
-        el('span', {}, 'Tap to reveal picture')
+        el('span', { className: 'flip-cue-label' }, 'Tap to reveal picture'),
+        el('span', { className: 'flip-cue-sparkle' }, '✨')
       );
       front.appendChild(flipCue);
 
@@ -388,7 +433,8 @@
       back.appendChild(polaroid);
 
       const flipBackCue = el('div', { className: 'flip-back-cue' },
-        el('span', {}, 'Tap to flip back ↺')
+        el('span', { className: 'flip-back-icon' }, '↺'),
+        el('span', {}, 'Tap to flip back')
       );
       back.appendChild(flipBackCue);
 
@@ -771,18 +817,13 @@
   // Target: October 15, 00:00:00 (midnight start of Oct 15) — local time
   function getTargetDate() {
     const now = new Date();
-    // Target: Oct 15 of the current year at midnight
-    let target = new Date(now.getFullYear(), 9, 15, 0, 0, 0, 0); // month 9 = October
-    // If Oct 15 has already passed this year, target next year
-    if (now > target) {
-      target = new Date(now.getFullYear() + 1, 9, 15, 0, 0, 0, 0);
-    }
-    return target;
+    // Target: Oct 15 of current year at midnight
+    return new Date(now.getFullYear(), 9, 15, 0, 0, 0, 0); // month 9 = October
   }
 
   function isLocalhost() {
     const h = window.location.hostname;
-    return h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0' || h === '' || h === '::1';
+    return h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0' || h === '::1';
   }
 
   function padZero(n) {

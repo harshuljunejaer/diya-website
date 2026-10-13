@@ -945,21 +945,22 @@ a { color: var(--accent-wine); text-decoration: none; }
 .fragments-grid.two-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(24px, 4vw, 48px);
-  max-width: 980px;
+  gap: clamp(28px, 4.5vw, 52px);
+  max-width: 1040px;
   margin: 0 auto;
-  perspective: 1400px;
+  perspective: 1600px;
 }
 
-/* 3D Flip Card */
+/* 3D Flip Card Container */
 .flip-card {
   position: relative;
-  min-height: 480px;
-  border-radius: 14px;
-  perspective: 1400px;
+  min-height: 520px;
+  border-radius: 22px;
+  perspective: 1600px;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .flip-card-inner {
   position: relative;
@@ -967,21 +968,44 @@ a { color: var(--accent-wine); text-decoration: none; }
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1);
-  border-radius: 14px;
+  border-radius: 22px;
 }
 .flip-card.flipped .flip-card-inner {
   transform: rotateY(180deg);
 }
+
 @media (hover: hover) {
   .flip-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-8px);
   }
   .flip-card:hover .flip-card-front,
   .flip-card:hover .flip-card-back {
-    box-shadow: 0 24px 50px rgba(74, 34, 51, 0.16);
+    box-shadow: 0 28px 60px -10px rgba(115, 35, 60, 0.18),
+                0 12px 28px -6px rgba(212, 167, 106, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    border-color: rgba(212, 167, 106, 0.65);
+  }
+  .flip-card:hover .flip-cue {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #8B2D4A 0%, #A63C5C 100%);
+    color: #FFFDF9;
+    border-color: #8B2D4A;
+    box-shadow: 0 8px 24px rgba(139, 45, 74, 0.3);
+  }
+  .flip-card:hover .flip-cue-icon {
+    transform: rotate(180deg);
+    color: #FFD79E;
+  }
+  .flip-card:hover .score-highlight-pill {
+    transform: scale(1.04);
+    box-shadow: 0 6px 20px rgba(212, 167, 106, 0.35);
+  }
+  .flip-card:hover .highlight-main-word {
+    transform: scale(1.02);
   }
 }
 
+/* Front & Back Common Styles */
 .flip-card-front,
 .flip-card-back {
   position: absolute;
@@ -990,143 +1014,356 @@ a { color: var(--accent-wine); text-decoration: none; }
   height: 100%;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  border-radius: 14px;
-  padding: clamp(32px, 4vw, 44px);
+  border-radius: 22px;
+  padding: clamp(34px, 4.5vw, 48px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  box-shadow: 0 16px 44px rgba(74, 34, 51, 0.09);
-  transition: box-shadow 0.3s ease;
-}
-.flip-card-front {
-  background: var(--paper);
-  border: 1px solid rgba(212, 167, 106, 0.3);
-}
-.flip-card-back {
-  background: var(--paper);
-  border: 1px solid rgba(212, 167, 106, 0.35);
-  transform: rotateY(180deg);
-  padding: 24px;
-  align-items: center;
+  background: linear-gradient(155deg, #FFFDF9 0%, #FAF4EC 55%, #F6ECE5 100%);
+  border: 1.5px solid rgba(212, 167, 106, 0.45);
+  box-shadow: 0 18px 44px -10px rgba(115, 35, 60, 0.12),
+              0 6px 16px -4px rgba(0, 0, 0, 0.04),
+              inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
 }
 
-/* Washi Tape Accent */
+/* Subtle stationery inner dashed frame */
+.flip-card-front::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px dashed rgba(199, 107, 126, 0.22);
+  border-radius: 14px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+  padding: 28px 24px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Washi Tape Accent with realistic zigzag torn ends */
 .washi-tape {
   position: absolute;
-  top: -8px;
+  top: -10px;
   left: 50%;
-  transform: translateX(-50%) rotate(-1deg);
-  width: 90px;
-  height: 22px;
-  background: rgba(199, 107, 126, 0.45);
-  border-left: 2px dashed rgba(255, 255, 255, 0.6);
-  border-right: 2px dashed rgba(255, 255, 255, 0.6);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  transform: translateX(-50%) rotate(-1.5deg);
+  width: 110px;
+  height: 25px;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(199, 107, 126, 0.45),
+    rgba(199, 107, 126, 0.45) 8px,
+    rgba(212, 167, 106, 0.45) 8px,
+    rgba(212, 167, 106, 0.45) 16px
+  );
+  backdrop-filter: blur(2px);
+  clip-path: polygon(
+    0% 0%, 100% 0%,
+    97% 50%, 100% 100%,
+    0% 100%, 3% 50%
+  );
+  box-shadow: 0 3px 8px rgba(74, 34, 51, 0.12);
   z-index: 5;
 }
+.flip-card:nth-child(2) .washi-tape {
+  transform: translateX(-50%) rotate(2deg);
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(212, 167, 106, 0.5),
+    rgba(212, 167, 106, 0.5) 8px,
+    rgba(199, 107, 126, 0.4) 8px,
+    rgba(199, 107, 126, 0.4) 16px
+  );
+}
 .washi-tape.tape-back {
-  background: rgba(212, 167, 106, 0.5);
-  transform: translateX(-50%) rotate(1.5deg);
+  background: rgba(212, 167, 106, 0.55);
+  transform: translateX(-50%) rotate(1deg);
+}
+
+/* Card Front Top Bar */
+.card-front-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 6px;
+  position: relative;
+  z-index: 2;
 }
 
 .fragment-tag {
-  font-size: 10px;
-  letter-spacing: 0.16em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent-wine);
   font-weight: 600;
-  margin-top: 10px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: rgba(139, 45, 74, 0.07);
+  border: 1px solid rgba(139, 45, 74, 0.18);
+  box-shadow: 0 2px 6px rgba(139, 45, 74, 0.04);
 }
-.fragment-num {
-  font-family: var(--ff-display);
-  font-size: 56px;
-  font-weight: 300;
-  color: rgba(139,45,74,0.12);
-  line-height: 1;
-  margin: 4px 0 8px;
-}
-.fragment-title {
-  font-family: var(--ff-display);
-  font-size: clamp(26px, 3.5vw, 34px);
-  font-weight: 400;
-  line-height: 1.15;
-  color: var(--text-dark);
-  margin-bottom: 12px;
-}
-.fragment-body {
-  font-size: 14.5px;
-  line-height: 1.75;
-  color: var(--text-muted);
+.fragment-tag .tag-star {
+  font-size: 9px;
+  color: var(--accent-gold);
 }
 
-.flip-cue, .flip-back-cue {
+.fragment-num {
+  font-family: var(--ff-display);
+  font-size: 26px;
+  font-weight: 600;
+  font-style: italic;
+  color: rgba(139, 45, 74, 0.38);
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+/* Fragment Title & Dramatic Highlights */
+.fragment-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 18px 0 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.fragment-title-lead {
+  font-family: var(--ff-display);
+  font-size: clamp(22px, 3vw, 26px);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-warm);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.fragment-title-featured {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px 14px;
+  margin-top: 4px;
+}
+
+/* The standout 100/10 Score Pill */
+.highlight-score-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 11px;
+  gap: 6px;
+  padding: 5px 16px;
+  background: linear-gradient(135deg, rgba(212, 167, 106, 0.28) 0%, rgba(232, 160, 160, 0.3) 100%);
+  border: 1.5px solid rgba(212, 167, 106, 0.65);
+  border-radius: 30px;
+  font-family: var(--ff-display);
+  font-size: clamp(22px, 3.2vw, 30px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent-wine);
+  box-shadow: 0 4px 16px rgba(212, 167, 106, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  line-height: 1.1;
+}
+.highlight-score-pill .score-sparkle {
+  font-size: 13px;
+  color: #D4A76A;
+  animation: pulseSparkle 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulseSparkle {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  100% { transform: scale(1.2); opacity: 1; }
+}
+
+/* Playful 'Bad' Quirk Pill */
+.highlight-quirk-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 16px;
+  background: linear-gradient(135deg, rgba(212, 167, 106, 0.25) 0%, rgba(184, 120, 85, 0.2) 100%);
+  border: 1.5px solid rgba(184, 120, 85, 0.45);
+  border-radius: 30px;
+  font-family: var(--ff-display);
+  font-size: clamp(22px, 3.2vw, 30px);
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #8B2D4A;
+  box-shadow: 0 4px 14px rgba(184, 120, 85, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: transform 0.3s ease;
+  line-height: 1.1;
+}
+
+/* The BIG Hero Word: SMILE / HABITS */
+.highlight-main-word {
+  font-family: var(--ff-display);
+  font-size: clamp(44px, 5.8vw, 58px);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--accent-wine);
+  background: linear-gradient(135deg, #7A1D39 0%, #A63C5C 50%, #C76B7E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+.highlight-main-word .hero-dot {
+  color: var(--accent-gold);
+  -webkit-text-fill-color: var(--accent-gold);
+}
+
+/* Body text */
+.fragment-body {
+  font-size: 15.5px;
+  line-height: 1.8;
+  color: #4A333A;
+  position: relative;
+  z-index: 2;
+  margin: 6px 0 10px;
+  font-weight: 400;
+}
+
+/* Handwritten Scrapbook Marginalia */
+.card-handnote {
+  font-family: var(--ff-hand);
+  font-size: 23px;
+  line-height: 1.25;
+  color: var(--accent-rose);
+  transform: rotate(-1.5deg);
+  margin: 4px 0 14px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.flip-card:nth-child(2) .card-handnote {
+  transform: rotate(1deg);
+  color: var(--accent-wine);
+}
+
+/* Interactive CTA Flip Cue Button */
+.flip-cue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(247, 238, 230, 0.95));
+  border: 1.5px solid rgba(212, 167, 106, 0.55);
+  box-shadow: 0 4px 16px rgba(139, 45, 74, 0.08);
+  font-size: 11.5px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-wine);
-  font-weight: 500;
-  margin-top: 24px;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  margin-top: 10px;
 }
 .flip-cue-icon {
-  font-size: 14px;
-  transition: transform 0.4s ease;
+  font-size: 15px;
+  color: var(--accent-wine);
+  transition: transform 0.5s ease, color 0.3s ease;
 }
-.flip-card:hover .flip-cue-icon {
-  transform: rotate(180deg);
+.flip-cue-sparkle {
+  font-size: 13px;
+  color: var(--accent-gold);
 }
 
 /* Polaroid Photo on Back */
 .polaroid-frame {
   background: #FFFFFF;
-  padding: 12px 12px 16px;
-  border-radius: 6px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  padding: 14px 14px 18px;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(74, 34, 51, 0.14), 0 2px 8px rgba(0,0,0,0.06);
   width: 100%;
-  max-width: 320px;
+  max-width: 330px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid rgba(0,0,0,0.05);
-  margin-top: 8px;
+  border: 1px solid rgba(212, 167, 106, 0.2);
+  margin-top: 6px;
+  transition: transform 0.3s ease;
 }
 .polaroid-img {
   width: 100%;
-  height: 250px;
+  height: 255px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 6px;
   display: block;
 }
 .polaroid-caption {
   width: 100%;
-  padding-top: 12px;
+  padding-top: 14px;
   text-align: center;
 }
 .polaroid-heading {
   font-family: var(--ff-display);
-  font-size: 19px;
+  font-size: 21px;
+  font-weight: 600;
   color: var(--accent-wine);
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 .polaroid-note {
   font-family: var(--ff-hand);
-  font-size: 21px;
+  font-size: 22px;
   color: var(--text-warm);
   line-height: 1.3;
 }
 .flip-badge {
   position: absolute;
-  top: 12px; right: 14px;
+  top: 14px; right: 16px;
   font-size: 11px;
-  padding: 4px 10px;
-  border-radius: 12px;
-  background: var(--bg-warm);
+  padding: 5px 12px;
+  border-radius: 16px;
+  background: rgba(255, 253, 248, 0.95);
   color: var(--accent-wine);
-  font-weight: 500;
-  border: 1px solid rgba(212,167,106,0.3);
+  font-weight: 600;
+  border: 1px solid rgba(212, 167, 106, 0.4);
+  box-shadow: 0 3px 10px rgba(74, 34, 51, 0.08);
+  z-index: 3;
+}
+
+.flip-back-cue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 22px;
+  border-radius: 30px;
+  background: rgba(255, 253, 248, 0.9);
+  border: 1px solid rgba(212, 167, 106, 0.45);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-wine);
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(74, 34, 51, 0.06);
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+.flip-back-cue:hover {
+  background: var(--accent-wine);
+  color: #FFFDF9;
+  border-color: var(--accent-wine);
+}
+.flip-back-icon {
+  font-size: 14px;
 }
 
 .fragments-annotation {
@@ -1670,8 +1907,9 @@ a { color: var(--accent-wine); text-decoration: none; }
     margin: 0 auto;
     gap: 32px;
   }
-  .flip-card { min-height: 460px; }
+  .flip-card { min-height: 500px; }
   .polaroid-img { height: 230px; }
+  .highlight-main-word { font-size: 44px; }
 
   .wish-paragraphs p { font-size: 18px; }
   .envelope-container { max-width: 100%; }
@@ -1698,12 +1936,14 @@ a { color: var(--accent-wine); text-decoration: none; }
   .collage-caption { padding: 28px 10px 10px; }
   .collage-caption span { font-size: 10px; }
 
-  .fragments-grid.two-cards { max-width: 100%; gap: 20px; }
-  .flip-card { min-height: 440px; }
-  .flip-card-front, .flip-card-back { padding: 24px 18px; }
+  .fragments-grid.two-cards { max-width: 100%; gap: 24px; }
+  .flip-card { min-height: 480px; }
+  .flip-card-front, .flip-card-back { padding: 26px 20px; }
   .polaroid-img { height: 210px; }
-  .fragment-num { font-size: 42px; }
-  .fragment-title { font-size: 24px; }
+  .fragment-num { font-size: 22px; }
+  .highlight-score-pill, .highlight-quirk-pill { font-size: 20px; padding: 4px 12px; }
+  .highlight-main-word { font-size: 38px; }
+  .card-handnote { font-size: 20px; }
 
   .candle-wrapper { width: 60px; height: 86px; }
   .candle-stick { width: 18px; height: 42px; }
