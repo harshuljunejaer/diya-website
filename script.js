@@ -765,9 +765,227 @@
   }
 
   /* ══════════════════════════════════════════════════════════
-     INITIALIZE EVERYTHING
+     COUNTDOWN TIMER & BIRTHDAY SPLASH SYSTEM
      ══════════════════════════════════════════════════════════ */
-  document.addEventListener('DOMContentLoaded', () => {
+
+  // Target: October 15, 00:00:00 (midnight start of Oct 15) — local time
+  function getTargetDate() {
+    const now = new Date();
+    // Target: Oct 15 of the current year at midnight
+    let target = new Date(now.getFullYear(), 9, 15, 0, 0, 0, 0); // month 9 = October
+    // If Oct 15 has already passed this year, target next year
+    if (now > target) {
+      target = new Date(now.getFullYear() + 1, 9, 15, 0, 0, 0, 0);
+    }
+    return target;
+  }
+
+  function isLocalhost() {
+    const h = window.location.hostname;
+    return h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0' || h === '' || h === '::1';
+  }
+
+  function padZero(n) {
+    return n < 10 ? '0' + n : String(n);
+  }
+
+  // Create floating particles for countdown background
+  function initCountdownParticles() {
+    const container = document.getElementById('countdown-particles');
+    if (!container) return;
+    const colors = ['#D4A76A', '#C76B7E', '#E8A0A0', '#B87855', '#8B2D4A'];
+    for (let i = 0; i < 40; i++) {
+      const p = document.createElement('div');
+      p.className = 'countdown-particle';
+      const size = Math.random() * 4 + 2;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.animationDuration = (Math.random() * 8 + 6) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      container.appendChild(p);
+    }
+  }
+
+  // Party popper burst engine — shoots from a corner
+  function runPartyPopper(canvas, side) {
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const colors = [
+      '#8B2D4A', '#C76B7E', '#D4A76A', '#E8A0A0', '#B87855',
+      '#EDDBD5', '#6B1D34', '#E5C5BE', '#F3EAE0', '#FFB6C1',
+      '#D4A76A', '#C76B7E'
+    ];
+
+    // Origin point: bottom-left for left popper, bottom-right for right popper
+    const originX = side === 'left' ? 0 : canvas.width;
+    const originY = canvas.height;
+    const dirMult = side === 'left' ? 1 : -1;
+
+    const pieces = [];
+    // First burst
+    for (let i = 0; i < 80; i++) {
+      const angle = (side === 'left')
+        ? (-Math.PI / 4 + (Math.random() - 0.5) * Math.PI * 0.7)
+        : (-Math.PI + Math.PI / 4 + (Math.random() - 0.5) * Math.PI * 0.7);
+      const speed = Math.random() * 12 + 5;
+      pieces.push({
+        x: originX + (Math.random() - 0.5) * 20,
+        y: originY - Math.random() * 30,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        w: Math.random() * 10 + 4,
+        h: Math.random() * 7 + 3,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * 360,
+        rotSpeed: (Math.random() - 0.5) * 15,
+        opacity: 1,
+        gravity: 0.08 + Math.random() * 0.04,
+        sway: (Math.random() - 0.5) * 0.3,
+        shape: Math.random() > 0.6 ? 'circle' : (Math.random() > 0.5 ? 'ribbon' : 'rect'),
+        delay: Math.random() * 300 // staggered start
+      });
+    }
+
+    const startTime = performance.now();
+    let animId;
+
+    function draw(now) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const elapsed = now - startTime;
+
+      pieces.forEach(p => {
+        if (elapsed < p.delay) return;
+
+        ctx.save();
+        ctx.globalAlpha = p.opacity;
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+
+        if (p.shape === 'rect') {
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        } else if (p.shape === 'circle') {
+          ctx.beginPath();
+          ctx.arc(0, 0, p.w / 3, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          // Ribbon / streamer
+          ctx.beginPath();
+          ctx.moveTo(-p.w / 2, 0);
+          ctx.quadraticCurveTo(0, -p.h, p.w / 2, 0);
+          ctx.quadraticCurveTo(0, p.h * 0.5, -p.w / 2, 0);
+          ctx.fill();
+        }
+        ctx.restore();
+
+        p.x += p.vx + p.sway;
+        p.y += p.vy;
+        p.vy += p.gravity;
+        p.vx *= 0.995; // air friction
+        p.rotation += p.rotSpeed;
+        p.rotSpeed *= 0.998;
+
+        // Gentle fade after a while
+        if (p.y > canvas.height * 0.7) {
+          p.opacity = Math.max(0, p.opacity - 0.008);
+        }
+      });
+
+      animId = requestAnimationFrame(draw);
+    }
+    animId = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(animId);
+  }
+
+  // Floating rose petals
+  function initSplashPetals() {
+    const container = document.getElementById('splash-petals');
+    if (!container) return;
+    const petalColors = ['#E8A0A0', '#EDDBD5', '#C76B7E', '#E5C5BE', '#D4A76A', '#F3EAE0'];
+    for (let i = 0; i < 25; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'splash-petal';
+      const size = Math.random() * 10 + 8;
+      petal.style.width = size + 'px';
+      petal.style.height = size + 'px';
+      petal.style.left = Math.random() * 100 + '%';
+      petal.style.background = petalColors[Math.floor(Math.random() * petalColors.length)];
+      petal.style.animationDuration = (Math.random() * 6 + 5) + 's';
+      petal.style.animationDelay = (Math.random() * 4) + 's';
+      container.appendChild(petal);
+    }
+  }
+
+  /* ─── Timer Audio Helpers ─── */
+  let timerAudio = null;
+
+  function startTimerAudio() {
+    timerAudio = document.getElementById('timer-audio');
+    if (!timerAudio) return;
+    timerAudio.volume = 0.5;
+    timerAudio.loop = true;
+    const tryTimerPlay = () => {
+      if (timerAudio.paused) {
+        timerAudio.play().catch(() => {});
+      }
+    };
+    tryTimerPlay();
+    // Also try on first user gesture (browsers block autoplay)
+    const gestureEvents = ['pointerdown', 'touchstart', 'click', 'keydown'];
+    function onGesture() {
+      tryTimerPlay();
+      gestureEvents.forEach(e => {
+        window.removeEventListener(e, onGesture);
+        document.removeEventListener(e, onGesture);
+      });
+    }
+    gestureEvents.forEach(e => {
+      window.addEventListener(e, onGesture, { passive: true, once: false });
+      document.addEventListener(e, onGesture, { passive: true, once: false });
+    });
+  }
+
+  function stopTimerAudio() {
+    if (timerAudio) {
+      timerAudio.pause();
+      timerAudio.currentTime = 0;
+    }
+  }
+
+  // Transition: show birthday splash → then show website
+  function showBirthdaySplash(callback) {
+    const splash = document.getElementById('birthday-splash');
+    const leftCanvas = document.getElementById('splash-popper-left');
+    const rightCanvas = document.getElementById('splash-popper-right');
+    if (!splash) { callback(); return; }
+
+    splash.style.display = 'flex';
+
+    // Launch party poppers from both sides + floating petals
+    initSplashPetals();
+    const stopLeft = runPartyPopper(leftCanvas, 'left');
+    const stopRight = runPartyPopper(rightCanvas, 'right');
+
+    // Show splash for 3.5 seconds, then fade out
+    setTimeout(() => {
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        splash.classList.add('hidden');
+        if (stopLeft) stopLeft();
+        if (stopRight) stopRight();
+        callback();
+      }, 1500);
+    }, 3500);
+  }
+
+  // Initialize the main website (all existing functionality)
+  function initWebsite() {
+    document.body.classList.remove('countdown-active');
     initAmbientCanvas();
     initCursorEffects();
     initHero();
@@ -783,6 +1001,118 @@
     initScrollReveal();
     initScrollProgress();
     initSectionNav();
+  }
+
+  // Dismiss countdown overlay and proceed
+  function dismissCountdown(showSplash) {
+    const overlay = document.getElementById('countdown-overlay');
+    if (!overlay) return;
+
+    // Stop timer sound when leaving countdown screen
+    stopTimerAudio();
+
+    overlay.classList.add('fade-out');
+    setTimeout(() => {
+      overlay.classList.add('hidden');
+      if (showSplash) {
+        showBirthdaySplash(() => initWebsite());
+      } else {
+        initWebsite();
+      }
+    }, 800);
+  }
+
+  // Start the live countdown timer
+  function startCountdown() {
+    const target = getTargetDate();
+    const daysEl = document.getElementById('cd-days');
+    const hoursEl = document.getElementById('cd-hours');
+    const minsEl = document.getElementById('cd-minutes');
+    const secsEl = document.getElementById('cd-seconds');
+
+    let prevValues = { d: '', h: '', m: '', s: '' };
+
+    function flashIfChanged(el, newVal, key) {
+      if (prevValues[key] !== newVal) {
+        prevValues[key] = newVal;
+        el.textContent = newVal;
+        el.classList.remove('flash');
+        // Force reflow to restart animation
+        void el.offsetWidth;
+        el.classList.add('flash');
+      }
+    }
+
+    function tick() {
+      const now = new Date();
+      const diff = target - now;
+
+      if (diff <= 0) {
+        // Time's up! Show birthday splash then website
+        clearInterval(interval);
+        flashIfChanged(daysEl, '00', 'd');
+        flashIfChanged(hoursEl, '00', 'h');
+        flashIfChanged(minsEl, '00', 'm');
+        flashIfChanged(secsEl, '00', 's');
+        setTimeout(() => dismissCountdown(true), 500);
+        return;
+      }
+
+      const totalSecs = Math.floor(diff / 1000);
+      const days = Math.floor(totalSecs / 86400);
+      const hours = Math.floor((totalSecs % 86400) / 3600);
+      const mins = Math.floor((totalSecs % 3600) / 60);
+      const secs = totalSecs % 60;
+
+      flashIfChanged(daysEl, padZero(days), 'd');
+      flashIfChanged(hoursEl, padZero(hours), 'h');
+      flashIfChanged(minsEl, padZero(mins), 'm');
+      flashIfChanged(secsEl, padZero(secs), 's');
+    }
+
+    tick(); // initial
+    const interval = setInterval(tick, 1000);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     INITIALIZE EVERYTHING
+     ══════════════════════════════════════════════════════════ */
+  document.addEventListener('DOMContentLoaded', () => {
+    const now = new Date();
+    const target = getTargetDate();
+    const overlay = document.getElementById('countdown-overlay');
+    const testBtn = document.getElementById('test-preview-btn');
+
+    // If the target time has already passed (we're on Oct 15 or later), skip countdown
+    if (now >= target) {
+      // Hide overlay immediately
+      if (overlay) overlay.classList.add('hidden');
+      // Show birthday splash if it's Oct 15
+      if (now.getMonth() === 9 && now.getDate() === 15) {
+        document.body.classList.add('countdown-active');
+        showBirthdaySplash(() => initWebsite());
+      } else {
+        initWebsite();
+      }
+      return;
+    }
+
+    // Countdown is active — show overlay, hide website
+    document.body.classList.add('countdown-active');
+    initCountdownParticles();
+    startCountdown();
+
+    // Start timer sound on countdown screen
+    startTimerAudio();
+
+    // Show test preview button only on localhost
+    if (isLocalhost() && testBtn) {
+      testBtn.style.display = 'inline-flex';
+      testBtn.addEventListener('click', () => {
+        // Test preview: show birthday splash first, then website
+        dismissCountdown(true);
+      });
+    }
   });
 
 })();

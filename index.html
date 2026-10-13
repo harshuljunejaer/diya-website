@@ -12,6 +12,82 @@
 </head>
 <body>
 
+  <!-- ═══════════════════════════════════
+       COUNTDOWN TIMER OVERLAY
+       ═══════════════════════════════════ -->
+  <div class="countdown-overlay" id="countdown-overlay">
+    <div class="countdown-bg-particles" id="countdown-particles"></div>
+    <div class="countdown-content">
+      <p class="countdown-eyebrow">✨ Something special is almost here</p>
+      <h1 class="countdown-title">A little surprise<br>for <em>Diyanshii</em></h1>
+      <p class="countdown-subtitle">This page will unlock at midnight, October 15</p>
+
+      <div class="matrix-display" id="matrix-display">
+        <div class="matrix-module">
+          <div class="matrix-screen">
+            <span class="matrix-value" id="cd-days">00</span>
+          </div>
+          <span class="matrix-label">Days</span>
+        </div>
+        <div class="matrix-colon">:</div>
+        <div class="matrix-module">
+          <div class="matrix-screen">
+            <span class="matrix-value" id="cd-hours">00</span>
+          </div>
+          <span class="matrix-label">Hours</span>
+        </div>
+        <div class="matrix-colon">:</div>
+        <div class="matrix-module">
+          <div class="matrix-screen">
+            <span class="matrix-value" id="cd-minutes">00</span>
+          </div>
+          <span class="matrix-label">Minutes</span>
+        </div>
+        <div class="matrix-colon">:</div>
+        <div class="matrix-module">
+          <div class="matrix-screen">
+            <span class="matrix-value" id="cd-seconds">00</span>
+          </div>
+          <span class="matrix-label">Seconds</span>
+        </div>
+      </div>
+
+      <p class="countdown-footer">♡ Patience makes the moment sweeter ♡</p>
+
+      <!-- Test Preview — only visible on localhost -->
+      <button class="test-preview-btn" id="test-preview-btn" style="display:none;">
+        🔓 Test Preview
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       HAPPY BIRTHDAY SPLASH SCREEN
+       ═══════════════════════════════════ -->
+  <div class="birthday-splash" id="birthday-splash" style="display:none;">
+    <!-- Party popper burst canvases — left & right sides -->
+    <canvas id="splash-popper-left" class="splash-popper-canvas splash-popper-left"></canvas>
+    <canvas id="splash-popper-right" class="splash-popper-canvas splash-popper-right"></canvas>
+    <!-- Soft floating petals layer -->
+    <div class="splash-petals" id="splash-petals"></div>
+    <!-- Decorative sparkle accents -->
+    <div class="splash-sparkle splash-sparkle-1">✦</div>
+    <div class="splash-sparkle splash-sparkle-2">✧</div>
+    <div class="splash-sparkle splash-sparkle-3">✦</div>
+    <div class="splash-sparkle splash-sparkle-4">✧</div>
+    <div class="splash-sparkle splash-sparkle-5">♡</div>
+    <div class="splash-sparkle splash-sparkle-6">✦</div>
+    <!-- Main text content -->
+    <div class="splash-content">
+      <p class="splash-eyebrow">✨ it's here ✨</p>
+      <h1 class="splash-text" id="splash-text">
+        <span class="splash-line splash-line-1">Happy</span>
+        <span class="splash-line splash-line-2">Birthday!</span>
+      </h1>
+      <div class="splash-heart-line">♡</div>
+    </div>
+  </div>
+
   <!-- Ambient floating particles canvas -->
   <canvas id="ambient-canvas" class="ambient-canvas" aria-hidden="true"></canvas>
 
@@ -278,7 +354,8 @@
   <!-- Floating Music Player -->
   <div class="floating-dock">
     <div class="music-player" id="music-player">
-      <audio id="bg-audio" src="assets/audio/cutted.mp3" preload="auto" loop autoplay playsinline></audio>
+      <audio id="timer-audio" src="assets/audio/timersound.mp3" preload="auto" loop playsinline></audio>
+      <audio id="bg-audio" src="assets/audio/cutted.mp3" preload="auto" loop playsinline></audio>
       <button class="music-btn paused" id="music-btn" aria-label="Play background music" title="Toggle Music">
         <div class="music-eq" aria-hidden="true">
           <span></span><span></span><span></span><span></span>
