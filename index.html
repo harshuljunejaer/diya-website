@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, Diyanshii ♡</title>
+  <meta name="description" content="A personal birthday wish for Diyanshii — a collection of memories, love, and wishes." />
+  <meta name="theme-color" content="#FBF7F0" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="data.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- Ambient floating particles canvas -->
+  <canvas id="ambient-canvas" class="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Interactive cursor glow -->
+  <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+  <div class="photo-cursor-pill" id="photo-cursor-pill" aria-hidden="true">View ♡</div>
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <!-- Section navigation dots -->
+  <nav class="section-nav" id="section-nav" aria-label="Section navigation">
+    <button class="section-dot active" data-target="hero" data-label="Hello" aria-label="Go to greeting"></button>
+    <button class="section-dot" data-target="gallery" data-label="Memories" aria-label="Go to gallery"></button>
+    <button class="section-dot" data-target="little-things" data-label="You" aria-label="Go to messages"></button>
+    <button class="section-dot" data-target="gallery-2" data-label="More" aria-label="Go to more photos"></button>
+    <button class="section-dot" data-target="wish" data-label="Wish" aria-label="Go to wish"></button>
+    <button class="section-dot" data-target="letter" data-label="Letter" aria-label="Go to letter"></button>
+    <button class="section-dot" data-target="closing" data-label="Finale" aria-label="Go to finale"></button>
+  </nav>
+
+  <!-- ═══════════════════════════════════
+       SECTION 1 — THE FIRST BIRTHDAY WISH
+       ═══════════════════════════════════ -->
+  <section id="hero" class="section snap-section" aria-label="Birthday greeting">
+    <div class="container hero-layout">
+
+      <div class="hero-content">
+        <p class="eyebrow reveal-up" data-delay style="--delay: 0ms">A little something, just for you</p>
+        <h1 class="heading-hero reveal-up" data-delay style="--delay: 150ms">
+          Happy<br>birthday,<br><em>Diyanshii.</em>
+        </h1>
+        <p class="body-text reveal-up" data-delay style="--delay: 320ms">
+          Today is about you — your smile, your little ways, and all the beautiful things that make you who you are.
+        </p>
+        <p class="handwritten reveal-up" data-delay style="--delay: 450ms">your day, your little universe ♡</p>
+        <div class="hero-scroll-cue reveal-up" data-delay style="--delay: 580ms">
+          <span class="line"></span>
+          <span>Scroll to explore</span>
+        </div>
+      </div>
+
+      <div class="hero-photo-wrap reveal-scale tilt-card" data-delay style="--delay: 300ms">
+        <div class="hero-photo-inner">
+          <img id="hero-photo" class="hero-photo" src="assets/images/main.jpeg" alt="Diyanshii" loading="eager" />
+          <div class="hero-shine"></div>
+        </div>
+        <div class="hero-badge">✨ 15 October • Diyanshii</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SECTION 2 — PHOTO COLLAGE
+       ═══════════════════════════════════ -->
+  <section id="gallery" class="section snap-section" aria-label="Photo gallery">
+    <div class="container">
+      <div class="gallery-header">
+        <p class="eyebrow reveal-up">The good little things</p>
+        <h2 class="heading-section reveal-up" data-delay style="--delay: 120ms">
+          If we could keep moments<br>in our pockets, I'd keep these.
+        </h2>
+        <p class="body-text reveal-up" data-delay style="--delay: 240ms">
+          Little days, silly smiles, familiar faces, and moments that somehow become the ones we remember most.
+        </p>
+      </div>
+
+      <div class="collage" id="collage-grid">
+        <!-- Populated by script.js -->
+      </div>
+
+      <div class="gallery-footer reveal-up" data-delay style="--delay: 200ms">
+        <p class="handwritten">little pieces of us ♡</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SECTION 3 — THE LITTLE THINGS
+       ═══════════════════════════════════ -->
+  <section id="little-things" class="section snap-section" aria-label="Affectionate messages">
+    <div class="container">
+      <div class="fragments-header">
+        <p class="eyebrow reveal-up">Things I hope you never forget</p>
+        <h2 class="heading-section reveal-up" data-delay style="--delay: 120ms">
+          A few things about you<br>that make you special.
+        </h2>
+        <div class="flip-instruction-pill reveal-up" data-delay style="--delay: 200ms">
+          <span class="flip-pill-icon">↻</span>
+          <span>Tap any card to flip & reveal the picture</span>
+        </div>
+      </div>
+
+      <div class="fragments-grid two-cards" id="fragments-grid">
+        <!-- Rendered with 3D photo flip cards by script.js -->
+      </div>
+
+      <div class="fragments-annotation reveal-up" data-delay style="--delay: 200ms">
+        <p class="handwritten">two sides of our favourite person ♡</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SECTION 4 — A FEW MORE LITTLE MOMENTS
+       ═══════════════════════════════════ -->
+  <section id="gallery-2" class="section snap-section" aria-label="More photos">
+    <div class="container">
+      <div class="gallery2-header">
+        <p class="eyebrow reveal-up">Collected with love</p>
+        <h2 class="heading-section reveal-up" data-delay style="--delay: 120ms">
+          Because one gallery<br>could never be enough.
+        </h2>
+        <p class="body-text reveal-up" data-delay style="--delay: 240ms">
+          Here are a few more pieces of the picture — little glimpses of the days that make life feel like ours.
+        </p>
+      </div>
+
+      <div class="gallery2-showcase" id="gallery2-showcase">
+        <!-- Populated by script.js -->
+      </div>
+
+      <div class="gallery2-annotation reveal-up" data-delay style="--delay: 150ms">
+        <p class="handwritten">keeping the little things close ♡</p>
+      </div>
+
+      <div class="timeline" id="timeline-section">
+        <p class="timeline-label reveal-up">A few moments, in order</p>
+        <div class="timeline-list" id="timeline-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SECTION 5 — A WISH FOR YOUR NEW YEAR
+       ═══════════════════════════════════ -->
+  <section id="wish" class="section snap-section" aria-label="Birthday wish">
+    <div class="container">
+      <div class="wish-inner">
+        <p class="eyebrow reveal-up">One little wish</p>
+        <h2 class="heading-section reveal-up" data-delay style="--delay: 120ms">
+          For everything this<br>next chapter holds.
+        </h2>
+
+        <div class="wish-paragraphs">
+          <p class="reveal-up" data-delay style="--delay: 200ms">
+            I hope this year brings you days that feel light, people who make you feel understood, little surprises that turn into favourite memories, and so many reasons to smile.
+          </p>
+          <p class="reveal-up" data-delay style="--delay: 320ms">
+            I hope you find new things to love, new places to explore, and new parts of yourself that make you proud.
+          </p>
+          <p class="reveal-up" data-delay style="--delay: 440ms">
+            And on the days when life feels a little too much, I hope you remember that you are loved, you matter, and you never have to have everything figured out all at once.
+          </p>
+          <p class="reveal-up" data-delay style="--delay: 560ms">
+            May this year be gentle with you, generous with happiness, and full of moments you'll want to remember.
+          </p>
+        </div>
+
+        <!-- Interactive Birthday Candle Experience -->
+        <div class="candle-experience reveal-up" data-delay style="--delay: 600ms">
+          <div class="candle-wrapper" id="candle-wrapper" role="button" tabindex="0" aria-label="Make a wish and tap the candle to blow it out">
+            <div class="candle-glow" id="candle-glow"></div>
+            <div class="flame" id="candle-flame">
+              <div class="flame-core"></div>
+            </div>
+            <div class="candle-wick"></div>
+            <div class="candle-stick"></div>
+            <div class="candle-base"></div>
+            <div class="smoke-wisp" id="smoke-wisp"></div>
+          </div>
+          <p class="candle-prompt" id="candle-prompt">Make a wish & tap to blow the candle 🎂</p>
+          <div class="candle-wished-alert" id="candle-wished-alert">
+            <span class="wish-title">✨ Wish sent to the universe!</span>
+            <span class="wish-sub">You are definitely going to qualify CAT 2026 this year, Diyanshii! We believe in you 🎓🏆♡</span>
+          </div>
+        </div>
+
+        <div class="wish-closing reveal-up" data-delay style="--delay: 720ms">
+          <p>Here's to another beautiful chapter, Diyanshii.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SECTION 6 — A LETTER, JUST FOR YOU
+       ═══════════════════════════════════ -->
+  <section id="letter" class="section snap-section" aria-label="Birthday letter">
+    <div class="container">
+      <div class="letter-header">
+        <p class="eyebrow reveal-up">Open when you're ready</p>
+        <h2 class="heading-section reveal-up" data-delay style="--delay: 120ms">
+          A little letter for<br>the birthday girl.
+        </h2>
+      </div>
+
+      <div class="envelope-container reveal-scale" data-delay style="--delay: 250ms">
+        <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open the birthday letter">
+          <div class="envelope-body">
+            <div class="envelope-flap" aria-hidden="true"></div>
+            <div class="envelope-seal" aria-hidden="true">♡</div>
+            <p class="envelope-label">For Diyanshii, with lots of love.</p>
+            <p class="envelope-cta">Tap to open <span aria-hidden="true">↓</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="letter-content" id="letter-content" aria-live="polite">
+        <p>Dear Diyanshii,</p>
+        <p>Happy birthday to you.</p>
+        <p>I hope you know how special it is to have you in my life. Among all the little things that make a family feel like home, there are the familiar laughs, the everyday conversations, the silly moments, and the memories we don't always realise we're making.</p>
+        <p>I hope you never feel that you need to be perfect to be appreciated. I hope you give yourself the same kindness you give to the people around you, and that you always make room for the things that make you happy.</p>
+        <p>May you keep growing into the person you want to become, keep discovering things that excite you, and keep finding reasons to laugh at the most unexpected moments.</p>
+        <p>More than anything, I hope this birthday reminds you how much you deserve to be celebrated — not just today, but on all the ordinary days in between, too.</p>
+        <p>Wishing you a year full of warmth, laughter, lovely surprises, and memories that stay with you long after the day has passed.</p>
+        <p>Happy birthday, Diyanshii.</p>
+        <p class="letter-signature" id="letter-signature">Your sibling ♡</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SECTION 7 — THE FINAL MOMENT
+       ═══════════════════════════════════ -->
+  <section id="closing" class="section snap-section" aria-label="Final birthday wish">
+    <div class="container closing-layout">
+
+      <div class="closing-text">
+        <p class="eyebrow reveal-up" data-delay style="--delay: 0ms">And one last thing...</p>
+        <h2 class="heading-hero reveal-up" data-delay style="--delay: 150ms">
+          I hope this year feels a little more like everything you've been wishing for.
+        </h2>
+        <p class="body-text reveal-up" data-delay style="--delay: 300ms">
+          More laughter. More little adventures. More moments that feel like sunshine. And more reasons to be proud of the person you're becoming.
+        </p>
+
+        <div class="closing-big-wish reveal-up" data-delay style="--delay: 450ms">
+          <p>"Keep being wonderfully, unapologetically you."</p>
+        </div>
+
+        <p class="closing-name reveal-up" data-delay style="--delay: 560ms">Happy birthday, Diyanshii. ♡</p>
+
+        <div class="closing-annotation reveal-up" data-delay style="--delay: 640ms">
+          <p class="handwritten">always cheering for you</p>
+        </div>
+
+        <button class="restart-btn reveal-up" data-delay style="--delay: 720ms" id="restart-btn" aria-label="Scroll back to the beginning">
+          Read it all again <span aria-hidden="true">↑</span>
+        </button>
+      </div>
+
+      <div class="closing-photo-wrap reveal-scale tilt-card" data-delay style="--delay: 400ms">
+        <div class="hero-photo-inner">
+          <img id="closing-photo" class="closing-photo" src="assets/images/photo-01.jpeg" alt="Diyanshii" loading="lazy" />
+          <div class="hero-shine"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Floating Music Player -->
+  <div class="floating-dock">
+    <div class="music-player" id="music-player">
+      <audio id="bg-audio" src="assets/audio/cutted.mp3" preload="auto" loop autoplay playsinline></audio>
+      <button class="music-btn paused" id="music-btn" aria-label="Play background music" title="Toggle Music">
+        <div class="music-eq" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close photo viewer">&times;</button>
+    <button class="lightbox-prev" id="lightbox-prev" aria-label="Previous photo">&#8249;</button>
+    <div class="lightbox-img-wrap">
+      <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+      <p class="lightbox-caption" id="lightbox-caption"></p>
+    </div>
+    <button class="lightbox-next" id="lightbox-next" aria-label="Next photo">&#8250;</button>
+  </div>
+
+</body>
+</html>
