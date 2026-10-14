@@ -616,6 +616,153 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
       triggerConfettiBurst(window.innerWidth / 2, window.innerHeight / 2, 60);
     });
+
+    initGiftModal();
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     10B. SIBLING GIFT SURPRISE (SARCASM & CLUE)
+     ══════════════════════════════════════════════════════════ */
+  function initGiftModal() {
+    const triggerBtn = document.getElementById('gift-trigger-btn');
+    const modal = document.getElementById('gift-modal');
+    const closeBtn = document.getElementById('gift-modal-close');
+    const backdrop = document.getElementById('gift-modal-backdrop');
+    const stepRoast = document.getElementById('gift-step-roast');
+    const stepClue = document.getElementById('gift-step-clue');
+    const loader = document.getElementById('gift-suspense-loader');
+    const revealBtn = document.getElementById('gift-reveal-btn');
+    const giftImg = document.getElementById('gift-box-photo');
+    const huntStartBtn = document.getElementById('gift-hunt-start-btn');
+    const backBtn = document.getElementById('gift-back-btn');
+
+    if (!triggerBtn || !modal) return;
+
+    // Load gift image from CONFIG or default
+    if (giftImg) {
+      const giftSrc = (CONFIG.gift && CONFIG.gift.src) ? CONFIG.gift.src : 'assets/images/gift-box.jpeg';
+      giftImg.src = giftSrc;
+      giftImg.alt = (CONFIG.gift && CONFIG.gift.alt) || 'Gift box photo';
+      let retried = false;
+      giftImg.addEventListener('error', function () {
+        if (!retried) {
+          retried = true;
+          if (this.src.includes('assets/images/')) {
+            this.src = 'gift-box.jpeg';
+            return;
+          }
+        }
+        const fallback = el('div', { className: 'gift-box-fallback' },
+          el('span', { className: 'gift-box-fallback-icon' }, '📦'),
+          el('span', { className: 'gift-box-fallback-title' }, 'Yahan aayegi tere dabbe ki photo!'),
+          el('span', { className: 'gift-box-fallback-sub' }, 'Gift box ki photo "assets/images/gift-box.jpeg" daal do')
+        );
+        if (this.parentNode) this.parentNode.replaceChild(fallback, this);
+      });
+    }
+
+    let revealTimer = null;
+
+    function openGiftModal() {
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      // Always reset to step 1 (roast)
+      stepRoast.classList.remove('hidden');
+      stepClue.classList.add('hidden');
+
+      // Reset 1-second suspense loader & button
+      if (loader) {
+        loader.classList.remove('fade-out');
+        loader.style.display = 'flex';
+      }
+      if (revealBtn) {
+        revealBtn.classList.add('hidden');
+      }
+
+      // Small confetti pop on opening
+      const rect = triggerBtn.getBoundingClientRect();
+      triggerConfettiBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 35);
+
+      // 1 SECOND SUSPENSE TIMER
+      clearTimeout(revealTimer);
+      revealTimer = setTimeout(() => {
+        if (loader) {
+          loader.classList.add('fade-out');
+          setTimeout(() => { loader.style.display = 'none'; }, 300);
+        }
+        if (revealBtn) {
+          revealBtn.classList.remove('hidden');
+          // subtle mini burst when the find gift button appears
+          const modalRect = modal.getBoundingClientRect();
+          triggerConfettiBurst(modalRect.left + modalRect.width / 2, modalRect.top + modalRect.height * 0.7, 25);
+        }
+      }, 1000);
+    }
+
+    function closeGiftModal() {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      clearTimeout(revealTimer);
+    }
+
+    function showClueStep() {
+      stepRoast.classList.add('hidden');
+      stepClue.classList.remove('hidden');
+      // Confetti burst for finding clue
+      const modalRect = modal.getBoundingClientRect();
+      triggerConfettiBurst(modalRect.left + modalRect.width / 2, modalRect.top + modalRect.height / 2, 70);
+    }
+
+    function showRoastStep() {
+      stepClue.classList.add('hidden');
+      stepRoast.classList.remove('hidden');
+      if (revealBtn) revealBtn.classList.remove('hidden');
+      if (loader) loader.style.display = 'none';
+    }
+
+    function showHuntToast() {
+      let toast = document.getElementById('gift-hunt-toast');
+      if (!toast) {
+        toast = el('div', { id: 'gift-hunt-toast', className: 'gift-hunt-toast' },
+          el('span', {}, '🔍'),
+          el('span', {}, 'Operation Scavenger Hunt shuru! All the best behen! 🏃‍♀️💨')
+        );
+        document.body.appendChild(toast);
+      }
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 4500);
+    }
+
+    triggerBtn.addEventListener('click', openGiftModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeGiftModal);
+    if (backdrop) backdrop.addEventListener('click', closeGiftModal);
+
+    if (revealBtn) {
+      revealBtn.addEventListener('click', showClueStep);
+    }
+
+    if (backBtn) {
+      backBtn.addEventListener('click', showRoastStep);
+    }
+
+    if (huntStartBtn) {
+      huntStartBtn.addEventListener('click', () => {
+        closeGiftModal();
+        triggerConfettiBurst(window.innerWidth / 2, window.innerHeight / 2, 90);
+        showHuntToast();
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeGiftModal();
+      }
+    });
   }
 
   /* ══════════════════════════════════════════════════════════

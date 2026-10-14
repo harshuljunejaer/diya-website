@@ -192,5 +192,14 @@ const CONFIG = {
   letterSignature: "Your sibling ♡",
 
   /* Background music */
-  music: "assets/audio/cutted.mp3"
+  music: "assets/audio/cutted.mp3",
+
+  /* Sibling Gift Surprise (Clue & Box Photo) */
+  gift: {
+    src: "gift.jpeg",
+    alt: "Diyanshii's birthday gift box",
+    title: "Yeh raha tere gift ka DABBA! 📸📦",
+    clueNote: "Yeh box ghar mein hi hai... ja dhoondh ke dikha! ♡"
+  }
 };
+

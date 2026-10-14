@@ -336,9 +336,30 @@
           <p class="handwritten">always cheering for you</p>
         </div>
 
-        <button class="restart-btn reveal-up" data-delay style="--delay: 720ms" id="restart-btn" aria-label="Scroll back to the beginning">
-          Read it all again <span aria-hidden="true">↑</span>
-        </button>
+        <!-- Grand Gift Surprise Spotlight Button -->
+        <div class="closing-gift-spotlight reveal-up" data-delay style="--delay: 700ms">
+          <button class="gift-trigger-btn" id="gift-trigger-btn" aria-label="Open your birthday gift surprise">
+            <span class="gift-btn-glow" aria-hidden="true"></span>
+            <span class="gift-btn-particles" aria-hidden="true"></span>
+            <div class="gift-btn-inner">
+              <span class="gift-btn-tag">Sibling Special · Tap To Reveal 🎁</span>
+              <div class="gift-btn-content">
+                <span class="gift-btn-icon-large" aria-hidden="true">🎁</span>
+                <span class="gift-btn-text-block">
+                  <span class="gift-btn-primary">Where's My Gift?</span>
+                  <span class="gift-btn-secondary">Click here to claim your birthday surprise ✨</span>
+                </span>
+                <span class="gift-btn-arrow-badge" aria-hidden="true">➔</span>
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <div class="closing-replay-wrap reveal-up" data-delay style="--delay: 780ms">
+          <button class="restart-btn" id="restart-btn" aria-label="Scroll back to the beginning">
+            Read it all again <span aria-hidden="true">↑</span>
+          </button>
+        </div>
       </div>
 
       <div class="closing-photo-wrap reveal-scale tilt-card" data-delay style="--delay: 400ms">
@@ -374,6 +395,117 @@
       <p class="lightbox-caption" id="lightbox-caption"></p>
     </div>
     <button class="lightbox-next" id="lightbox-next" aria-label="Next photo">&#8250;</button>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       GIFT SURPRISE MODAL (SIBLING SARCASM & CLUE)
+       ═══════════════════════════════════ -->
+  <div class="gift-modal" id="gift-modal" role="dialog" aria-modal="true" aria-labelledby="gift-modal-title" aria-hidden="true">
+    <div class="gift-modal-backdrop" id="gift-modal-backdrop"></div>
+
+    <div class="gift-modal-container">
+      <button class="gift-modal-close" id="gift-modal-close" aria-label="Close gift popup">&times;</button>
+
+      <!-- STEP 1: Sarcastic Sibling Roast -->
+      <div class="gift-step gift-step-roast" id="gift-step-roast">
+        <div class="gift-badge">
+          <span class="gift-badge-dot pulse"></span>
+          <span>Bhai-Behen Reality Check 💅</span>
+        </div>
+
+        <h3 class="gift-headline" id="gift-modal-title">
+          Aaye haaye! Itna sab kam tha kya?! 🤨
+        </h3>
+
+        <div class="gift-roast-body">
+          <div class="gift-roast-bubble">
+            <span class="bubble-icon">🤦‍♂️</span>
+            <p class="gift-roast-para highlight">
+              Matlab hadd hoti hai kisi cheez ki!
+            </p>
+          </div>
+
+          <p class="gift-roast-para main-roast">
+            Poori website banwai, bachpan se leke ab tak ki saari photos dhoondh ke lagayi, itna lamba emotional letter likha, cake ki candle bhi phoonkwa di... <span class="highlight-gold-phrase">aur madam ko abhi bhi alag se <strong>GIFT</strong> chahiye?!</span> 🙄
+          </p>
+
+          <p class="gift-roast-para kidney-roast">
+            Ek hi kidney bachi hai meri behen, woh bhi stamp paper pe sign karke de du kya tere naam?! 😭
+          </p>
+
+          <div class="gift-roast-quote">
+            <span class="quote-mark">“</span>
+            <p class="gift-roast-para punchline">
+              Sach sach bata... tujhe laga tha main chupke se <em>iPhone 16 Pro Max</em> nikal ke tere haath mein rakh dunga?! Itne ameer nahi hain hum! 😂
+            </p>
+          </div>
+        </div>
+
+        <!-- 1-Second Suspense Delay Area -->
+        <div class="gift-suspense-area" id="gift-suspense-area">
+          <div class="gift-suspense-loader" id="gift-suspense-loader">
+            <span class="suspense-spinner"></span>
+            <span class="suspense-text">Dil pe patthar rakh ke kuch soch raha hoon... 1 second ruk... ⏳</span>
+          </div>
+
+          <button class="gift-reveal-btn hidden" id="gift-reveal-btn" aria-label="Reveal the gift clue">
+            <span class="gift-reveal-btn-content">
+              <span>Achha Theek Hai, Dhoondh Apna Gift! 🔍🎁</span>
+              <span class="gift-reveal-arrow">→</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Scavenger Hunt & Box Photo -->
+      <div class="gift-step gift-step-clue hidden" id="gift-step-clue">
+        <div class="gift-badge gift-badge-mission">
+          <span class="gift-badge-dot pulse"></span>
+          <span>Mission: Ghar Ki Talashi 🕵️‍♀️🏡</span>
+        </div>
+
+        <h3 class="gift-headline clue-headline">
+          Yeh raha tere gift ka DABBA! 📸📦
+        </h3>
+
+        <div class="gift-clue-intro">
+          <div class="gift-clue-bubble">
+            <p class="gift-clue-text">
+              Haan behen, seedhe plate mein saja ke nahi milega! Yeh dekh photo uske dabbe ki... <strong class="highlight-gold-phrase">ja ab khud dhoondh le poore ghar mein!</strong> 🏃‍♀️💨
+            </p>
+          </div>
+          <p class="gift-clue-subtext">
+            Ghar mein hi kahin mast jagah chhupa ke rakha hai maine — bed ke peeche, almari ke kone mein, ya fridge ke upar! CID Daya banke ghar ki talashi shuru kar de! 🔍🏡
+          </p>
+        </div>
+
+        <!-- Photo Frame of Gift Box -->
+        <div class="gift-box-card">
+          <div class="gift-box-frame">
+            <div class="gift-box-pin" aria-hidden="true">📌</div>
+            <img id="gift-box-photo" class="gift-box-photo" src="gift.jpeg" alt="Diyanshii's Gift Box" loading="eager" />
+            <div class="gift-box-caption">
+              <span class="handwritten">Yeh box ghar mein hi hai... ja dhoondh ke dikha! ♡</span>
+            </div>
+          </div>
+          <p class="gift-box-tag">Saboot #1: The Mystery Dabba 📦</p>
+        </div>
+
+        <div class="gift-ultimatum">
+          <p>⚠️ <strong>Rule:</strong> Agle 15 minute mein nahi mila toh gift mummy ya padosi ko chala jayega! Timer is ticking... All the best champion! 😂✨</p>
+        </div>
+
+        <div class="gift-clue-actions">
+          <button class="gift-hunt-start-btn" id="gift-hunt-start-btn" type="button">
+            <span>Chal Dhoondhne Lagi Main! 🏃‍♀️💨</span>
+          </button>
+          <button class="gift-back-btn" id="gift-back-btn" type="button">
+            <span>Wapas Roast Padho 🙄</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
   </div>
 
 </body>
